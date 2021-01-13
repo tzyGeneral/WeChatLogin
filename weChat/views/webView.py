@@ -2,7 +2,9 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from weChat.models import LocalAuth
+from weChat.tools.makeRefreshToken import getRefreshToekn
 from weChat.form import RegisterForm
+import datetime
 
 
 @api_view(['GET', 'POST'])
@@ -13,13 +15,15 @@ def loginView(request):
     user = LocalAuth.getVaildUser(username, password)
     if not user:
         return Response({"status": status.HTTP_401_UNAUTHORIZED, "msg": "账号密码错误"})
-    refresh_token = user.token(days=7)
-    access_token = user.token(days=1)
+    refresh_token = getRefreshToekn(user.user_id)
+    access_token = user.token(days=7)
     user.refresh_token = refresh_token
+    user.refresh_token_expire_date = datetime.datetime.now() + datetime.timedelta(days=7)
     user.save()
     return Response({
         "status": 200,
         "access_token": access_token,
+        "expires_in": 604800,  # token有效期为7天
         "refresh_token": refresh_token,
         "nickName": user.nickname
     })
