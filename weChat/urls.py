@@ -16,6 +16,6 @@ urlpatterns = [
     path('/webRegister/', webView.registerView),
 
     # 刷新accessToken
-    path('/refresh_token', )
+    path('/refresh_token', baseView.refreshTokenView)
 
 ]
