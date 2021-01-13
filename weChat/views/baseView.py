@@ -4,9 +4,11 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 from weChat.models import UserInfo
 from weChat.tools.makeRefreshToken import getRefreshToekn
+from weChat.tools.decorators import my_login_required
 
 
 @api_view(['GET'])
+@my_login_required
 def helloView(request):
     rsp = {"status": status.HTTP_200_OK, "msg": "ok"}
     try:
