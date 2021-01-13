@@ -24,9 +24,9 @@ def refreshTokenView(request):
     refresh_token = request.data.get("refresh_token", "")
     userObj = UserInfo.objects.filter(refresh_token=refresh_token).first()
     # 假如改用户存在
-    if userObj.exists():
+    if userObj:
         # 判断是否过期
-        if userObj.refresh_token_expire_date < datetime.datetime.now():
+        if userObj.refresh_token_expire_date > datetime.datetime.now():
             # 可以刷新
             access_token = userObj.token(7)
             refresh_token = getRefreshToekn(userObj.user_id)
