@@ -1,4 +1,4 @@
-from weChat.utils import getUTCtimesmap, getMd5EncodeData
+from utils import getUTCtimesmap, getMd5EncodeData
 
 
 def getRefreshToekn(user_id: int) -> str:

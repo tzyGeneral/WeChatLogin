@@ -1,8 +1,7 @@
 from weChat.cache.datacache import DataCache
 from django.core.cache import caches
 from weChat.models import *
-from weChat.utils import weChatRequest
-from copy import deepcopy
+from utils import weChatRequest
 
 
 class OtherAuthUserLoginCache(DataCache):

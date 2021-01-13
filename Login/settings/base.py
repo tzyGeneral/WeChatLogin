@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'weChat',
+    'weChatThirdParty',
     'rest_framework',
     'django_user_agents',
     'corsheaders'

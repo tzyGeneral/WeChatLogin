@@ -19,5 +19,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('api/', include('weChat.urls'))
+    path('api/', include('weChat.urls')),
+    path('wechat/', include('weChatThirdParty.urls'))
 ]

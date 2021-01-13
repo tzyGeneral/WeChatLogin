@@ -1,0 +1,9 @@
+
+
+APPID = "wwwwww000000000000"
+
+APPSECRET = "xxxxxxxxxxxxxxxxxxxxxxxxx"
+
+TOKEN = "XXXXXXXXXX"
+
+encodingAESKey = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"

@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 
-from weChat.utils import weChatRequest
+from utils import weChatRequest
 from weChat.cache.cachetool import OtherAuthUserLoginCache
 from weChat.tools.makeRefreshToken import getRefreshToekn
 

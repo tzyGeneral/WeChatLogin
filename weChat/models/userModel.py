@@ -17,8 +17,8 @@ class UserInfo(models.Model):
     """用户模型"""
     user_id = models.CharField(verbose_name='用户id', max_length=50, unique=True)
     nickname = models.CharField(verbose_name='昵称', default='', max_length=30)
-    phone = models.IntegerField(unique=True, validators=[
-        RegexValidator(regex='^\d{11}$', message='手机号格式不对', code='手机号格式不对')], null=True)
+    phone = models.CharField(unique=True, validators=[
+        RegexValidator(regex='^\d{11}$', message='手机号格式不对', code='手机号格式不对')], max_length=12, null=True)
     gender = models.IntegerField(verbose_name='性别', db_column='gender', null=True, blank=True)
     profileImageUrl = models.CharField(verbose_name='头像链接', db_column='profileImageUrl', max_length=200)
     city = models.CharField(verbose_name='城市', max_length=20, db_column='city', null=True, blank=True)
