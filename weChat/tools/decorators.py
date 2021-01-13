@@ -8,7 +8,6 @@ from weChat.config import SIGN_ERR, NOT_AUTHENTICATE
 
 def my_login_required(view_func):
     """自定义登陆验证，验证token是否过期"""
-    UserModel = UserInfoCache()
 
     def _wrapped_view(request, *args, **kwargs):
         try:
@@ -21,7 +20,7 @@ def my_login_required(view_func):
             try:
                 dic = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
                 user_id = dic.get("user_id")
-                user = UserModel.getUserObj(user_id)
+                user = UserInfoCache().getUserObj(user_id)
                 if not user:
                     raise ValueError("用户不存在")
                 request.user = user
