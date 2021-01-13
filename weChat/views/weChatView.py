@@ -1,6 +1,7 @@
 import time
 import hashlib
 import requests
+import datetime
 from lxml import etree
 from weChat.config.appKeys import APPID, APPSECRET
 from rest_framework.response import Response
@@ -9,6 +10,7 @@ from rest_framework import status
 
 from weChat.utils import weChatRequest
 from weChat.cache.cachetool import OtherAuthUserLoginCache
+from weChat.tools.makeRefreshToken import getRefreshToekn
 
 
 @api_view(['GET'])
@@ -53,8 +55,17 @@ def weChatLgoinView(request):
         rsp = {"status": status.HTTP_401_UNAUTHORIZED, "msg": "请求微信服务器失败"}
         return Response(rsp)
     userInfo = OtherAuthUserLoginCache().getUserInfoFromCache(openid=openid, accessToken=access_token)
-    access_token = userInfo.token(days=1)
-    refresh_token = userInfo.token(days=7)
-
+    access_token = userInfo.token(days=7)
+    refresh_token = getRefreshToekn(userInfo.user_id)
+    userInfo.refresh_token = refresh_token
+    userInfo.refresh_token_expire_date = datetime.datetime.now() + datetime.timedelta(days=7)
+    userInfo.save()
+    return Response({
+            "status": status.HTTP_200_OK,
+            "access_token": access_token,
+            "expires_in": 604800,  # token有效期为7天
+            "refresh_token": refresh_token,
+            "nickName": userInfo.nickname
+        })
 
 
