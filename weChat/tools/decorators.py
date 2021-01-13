@@ -17,22 +17,21 @@ def my_login_required(view_func):
             # request.user = UserModel.objects.get(user_id='4')
             return JsonResponse({"code": NOT_AUTHENTICATE, "message": "不存在authenticate头"})
         else:
-            if auth[0].lower() == "token":
-                try:
-                    dic = jwt.decode(auth[1], settings.SECRET_KEY, algorithms=["HS256"])
-                    user_id = dic.get("data").get("user_id")
-                    user = UserModel.getUserObj(user_id)
-                    if not user:
-                        raise ValueError("用户不存在")
-                    request.user = user
-                except jwt.ExpiredSignatureError:
-                    return JsonResponse({"status_code": SIGN_ERR, "message": "Token 过期"})
-                except jwt.InvalidTokenError:
-                    return JsonResponse({"status_code": SIGN_ERR, "message": "无效 token"})
-                except Exception as e:
-                    return JsonResponse({"status_code": SIGN_ERR, "message": "用户不存在"})
-            else:
-                return JsonResponse({"status_code": SIGN_ERR, "message": "不支持的登录类型"})
+            token = auth[0]
+            try:
+                dic = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+                user_id = dic.get("user_id")
+                user = UserModel.getUserObj(user_id)
+                if not user:
+                    raise ValueError("用户不存在")
+                request.user = user
+            except jwt.ExpiredSignatureError:
+                return JsonResponse({"status_code": SIGN_ERR, "message": "Token 过期"})
+            except jwt.InvalidTokenError:
+                return JsonResponse({"status_code": SIGN_ERR, "message": "无效 token"})
+            except Exception as e:
+                return JsonResponse({"status_code": SIGN_ERR, "message": "用户不存在"})
+
         return view_func(request, *args, **kwargs)
 
     return wraps(view_func)(_wrapped_view)
