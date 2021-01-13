@@ -40,3 +40,19 @@ class OtherAuthUserLoginCache(DataCache):
                 result = self.getUserInfoData(openid, accessToken)
                 self.cache.set(openid, result, self.timeout)
         return result
+
+
+class UserInfoCache(DataCache):
+    """用户对象缓存"""
+    def __init__(self, model=UserInfo, cacheName='userInfo', timeout=60*60*24):
+        super().__init__(model, cacheName, timeout)
+        self.model = model
+        self.cache = caches[cacheName]
+        self.timeout = timeout
+
+    def getUserObj(self, userId: int):
+        userObj = self.cache.get(str(userId))
+        if not userObj:
+            userObj = self.model.objects.filter(user_id=userId).first()
+            self.cache.set(str(userId), userId, self.timeout)
+        return userObj
