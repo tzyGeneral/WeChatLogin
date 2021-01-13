@@ -38,13 +38,15 @@ class UserInfo(models.Model):
         return self._generate_jwt_token(days)
 
     def _generate_jwt_token(self, days: int):
-        token = jwt.encode({
-            'exp': datetime.utcnow() + timedelta(days=days),
-            'lat': datetime.utcnow(),
-            'data': {
-                'user_id': self.user_id
-            }
-        }, settings.SECRET_KEY, algorithm='HS256')
+        headers = {
+            'typ': 'jwt',
+            'alg': 'HS256'
+        }
+        payload = {
+            'user_id': self.user_id,  # 自定义用户ID
+            'exp': datetime.utcnow() + timedelta(days=days),  # 超时时间
+        }
+        token = jwt.encode(payload=payload, key=settings.SECRET_KEY, algorithm="HS256", headers=headers)
         return token.decode("utf-8")
 
     def __str__(self):
