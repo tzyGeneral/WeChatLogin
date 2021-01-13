@@ -2,6 +2,7 @@ from weChat.cache.datacache import DataCache
 from django.core.cache import caches
 from weChat.models import *
 from weChat.utils import weChatRequest
+from copy import deepcopy
 
 
 class OtherAuthUserLoginCache(DataCache):
@@ -50,9 +51,9 @@ class UserInfoCache(DataCache):
         self.cache = caches[cacheName]
         self.timeout = timeout
 
-    def getUserObj(self, userId: int):
+    def getUserObj(self, userId: str):
         userObj = self.cache.get(str(userId))
         if not userObj:
             userObj = self.model.objects.filter(user_id=userId).first()
-            self.cache.set(str(userId), userId, self.timeout)
+            self.cache.set(str(userId), userObj, self.timeout)
         return userObj
