@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>授权页面</title>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/weui/2.3.0/style/weui.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="app">
+    <div class="page__hd" style="margin-bottom: 300px"></div>
+
+    <div class="button-sp-area">
+        <a class="weui-btn weui-btn_primary" @click="getQrcodeHref"> 点击绑定公众号 </a>
+    </div>
+</div>
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data: {
+            message: "",
+            href: ''
+        },
+        computed: {
+            msg() {
+                console.log("msg==");
+                return '789456';
+            }
+        },
+        methods: {
+            conOut() {
+                console.log("调用输出", this.msg);
+            },
+            getQrcodeHref() {
+                var that = this
+                axios.get('http://127.0.0.1:8000/api/openPlatform/qrcode')
+                    .then(function (response) {
+                        console.log(response.data.data)
+                        window.location.href = response.data.data
+                    })
+            }
+        },
+        beforeMount() {
+            console.log("挂载前生命周期");
+        },
+        mounted() {
+        },
+        watch: {
+            'message'() {
+                console.log("监视器调用");
+            }
+        }
+    })
+</script>
+</body>
+</html>
+

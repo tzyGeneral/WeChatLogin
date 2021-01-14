@@ -14,7 +14,8 @@ from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -152,6 +153,18 @@ CACHES = {
             'server_max_value_length': 1024 * 1024 * 16,
         },
         'KEY_PREFIX': 'userInfo'
+    },
+    # 微信第三方使用
+    'ticket_cache': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': [
+            '127.0.0.1:11211',
+        ],
+        'TIMEOUT': 60 * 60 * 3,
+        'OPTIONS': {
+            'server_max_value_length': 1024 * 1024 * 16,
+        },
+        'KEY_PREFIX': 'ticket_cache'
     },
 }
 
